@@ -1,23 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
-import { WeatherData } from './models/weather.model';
+
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent implements OnInit {
+  weatherData: any;
   constructor(private weatherService: WeatherService) {}
-  cityName!: string;
-  WeatherData!: WeatherData;
-  ngOnInit(): void {
-    this.weatherService.getWeatherData('Landon').subscribe({
-      next: (Response) => {
-        this.WeatherData = Response;
-        console.log(Response);
-      },
-    });
+  ngOnInit() {
+    this.weatherService
+      .getCurrentLocation() // methode pour demander la localisation de l'utilisateur
+      .then((location: any) => {
+        this.weatherService
+          .getWeather(location.lat, location.lon)
+          .subscribe((data) => {
+            this.weatherData = data;
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error
+      });
+
   }
-  onSubmit() {}
+
+  formatTemperature(temp: number) {
+    //Methode pour qu'il n'y ait pas de chiffre après la virgule
+    return temp.toFixed(0);
+  }
+
 }

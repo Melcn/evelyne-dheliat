@@ -1,30 +1,48 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { WeatherData } from '../models/weather.model';
-import { Observable } from 'rxjs';
+import { map } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherService {
+  private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+  private apiKey = 'b97064688b9fd10fd57ce57df65e1add';
   constructor(private http: HttpClient) {}
 
-  getWeatherData(cityName: string): Observable<WeatherData> {
-    return this.http.get<WeatherData>(environment.WeatherApiBaseUrl, {
-      headers: new HttpHeaders()
-        .set(
-          environment.XRapidAPIHostHeaderName,
-          environment.XRapidAPIHostHeaderValue
-        )
-        .set(
-          environment.XRapidAPIKeyHeaderName,
-          environment.XRapidAPIKeyHeaderValue
-        ),
-      params: new HttpParams()
-        .set('q', cityName)
-        .set('units', 'metric')
-        .set('mode', 'json'),
+  getWeather(lat: number, lon: number) {
+    const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
+    return this.http.get(url).pipe(
+      map((data: any) => {
+        // Convert temperature from Kelvin to Celsius
+        data.main.temp = data.main.temp - 273.15;
+        return data;
+      })
+    );
+  }
+  getCurrentLocation() {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+            });
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      } else {
+        reject('Geolocation is not supported by this browser.');
+      }
     });
   }
+
+  // getWeatherForecast(lat: number, lon: number) {
+  //   const url = `${this.apiUrl}/forecast?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
+  //   return this.http.get(url);
+  // }
 }
