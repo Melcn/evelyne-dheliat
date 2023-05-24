@@ -23,8 +23,8 @@ export class WeatherService {
         ),
       params: new HttpParams()
         .set('q', cityName)
-        .set('units', 'metric')
-        .set('mode', 'json'),
+        .set('mode', 'json')
+        .set('units', 'metric'),
     });
   }
 }
