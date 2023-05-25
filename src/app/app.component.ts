@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   weatherData: any;
   constructor(private weatherService: WeatherService) {}
   ngOnInit() {
@@ -26,12 +26,10 @@ export class AppComponent implements OnInit {
         console.log(error);
         // Handle error
       });
-
   }
 
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);
   }
-
 }

@@ -1,1 +1,10 @@
-<p>weather works!</p>
+<div *ngIf="weatherData">
+  <h2>{{ weatherData.city.name }}</h2>
+  <div *ngFor="let forecast of weatherData.list">
+    <p>{{ forecast.dt_txt }}</p>
+    <p>{{ formatTemperature(forecast.main.temp) }}°C</p>
+    <p>{{ formatTemperature(forecast.wind.speed) }}KM/h</p>
+    <p>{{ formatTemperature(forecast.wind.deg) }}Deg</p>
+    <p>{{ forecast.weather[0].description }}</p>
+  </div>
+</div>
