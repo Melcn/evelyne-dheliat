@@ -25,6 +25,7 @@ export class WeatherComponent implements OnInit {
         console.log(error);
         // Handle error
       });
+      
   }
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
