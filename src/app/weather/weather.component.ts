@@ -10,6 +10,7 @@ export class WeatherComponent implements OnInit {
   weatherData: any;
 
   constructor(private weatherService: WeatherService) {}
+  
   ngOnInit(): void {
     this.weatherService
       .getCurrentLocation()
@@ -31,7 +32,7 @@ export class WeatherComponent implements OnInit {
   }
   getFormattedDate(timestamp: number) {
     const date = new Date(timestamp * 1000);
-    const option = { weekday: 'long', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('fr-FR');
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('fr-FR', options);
   }
 }
