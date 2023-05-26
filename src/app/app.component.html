@@ -1,7 +1,4 @@
-<div>
-  <input type="text" [(ngModel)]="city" placeholder="Entrez le nom de la ville" />
-  <button (click)="GetWeather()">Go</button>
-</div>
+
 
 <div *ngIf="weatherData">
   <h2>{{ weatherData.name }}</h2>

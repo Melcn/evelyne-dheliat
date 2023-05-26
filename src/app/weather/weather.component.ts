@@ -8,7 +8,6 @@ import { WeatherService } from '../services/weather.service';
 })
 export class WeatherComponent implements OnInit {
   weatherData: any;
-  city!: string;
 
   constructor(private weatherService: WeatherService) {}
   
@@ -17,7 +16,7 @@ export class WeatherComponent implements OnInit {
       .getCurrentLocation()
       .then((location: any) => {
         this.weatherService
-          .getWeatherForecast(this.city)
+          .getWeatherForecast(location.lat, location.lon)
           .subscribe((data) => {
             this.weatherData = data;
           });
