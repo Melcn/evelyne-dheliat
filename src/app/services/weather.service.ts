@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +13,15 @@ export class WeatherService {
   public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   constructor(private http: HttpClient) {}
 
-  getWeather(lat: number, lon: number) {
+  getWeather(lat: number, lon: number, city:string) {
     const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
     return this.http.get(url).pipe(
       map((data: any) => {
         //Methode pour convertir kelin à celsius
         data.main.temp = data.main.temp - 273.15;
+        data.city = city; // Ajout de la propriété city aux données
         return data;
+        
       })
     );
   }
@@ -43,29 +45,52 @@ export class WeatherService {
     });
   }
 
-  getWeatherForecast(lat: number, lon: number) {
-    const url = `${this.apiForcast}?lat=${lat}&lon=${lon}&cnt=40&appid=${this.apiKey}&units=metric`; // Augmentez le cnt à 40 pour obtenir suffisamment de prévisions pour 5 jours
-    return this.http.get(url).pipe(
-      map((data: any) => {
-        // Filtrer les prévisions pour obtenir une seule prévision par jour
-        const dailyForecasts: any[] = [];
-        const forecasts = data.list;
-        let currentDate = new Date(forecasts[0].dt_txt).getDate();
+  getWeatherForecast(city: string) {
+    return this.getCoordinates(city).pipe(
+      switchMap((coordinates: any) => {
+        const url = `${this.apiForcast}?lat=${coordinates.lat}&lon=${coordinates.lon}&cnt=40&appid=${this.apiKey}&units=metric`;
+        return this.http.get(url).pipe(
+          map((data: any) => {
+            // Filtrer les prévisions pour obtenir une seule prévision par jour
+            const dailyForecasts: any[] = [];
+            const forecasts = data.list;
+            let currentDate = new Date(forecasts[0].dt_txt).getDate();
   
-        forecasts.forEach((forecast: any) => {
-          const forecastDate = new Date(forecast.dt_txt).getDate();
-          if (forecastDate !== currentDate) {
-            dailyForecasts.push(forecast);
-            currentDate = forecastDate;
-          }
-        });
+            forecasts.forEach((forecast: any) => {
+              const forecastDate = new Date(forecast.dt_txt).getDate();
+              if (forecastDate !== currentDate) {
+                dailyForecasts.push(forecast);
+                currentDate = forecastDate;
+              }
+            });
   
-        // Retourner les prévisions filtrées
-        data.list = dailyForecasts;
-        return data;
+            // Retourner les prévisions filtrées
+            data.list = dailyForecasts;
+            data.city = city;
+            return data;
+          })
+        );
       })
     );
   }
+
+  getCoordinates(city: string) {
+    const geocodingUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${this.apiKey}`;
+  
+    return this.http.get<any>(geocodingUrl).pipe(
+      map((data: any[]) => {
+        if (data.length > 0) {
+          return {
+            lat: data[0].lat,
+            lon: data[0].lon
+          };
+        }
+        throw new Error('No coordinates found for the city');
+      })
+    );
+  }
+
+  
 }
 
 
