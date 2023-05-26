@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import axios from 'axios';
+import { BehaviorSubject, catchError, map, mergeMap, switchMap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,13 +18,34 @@ export class WeatherService {
   getWeather(lat: number, lon: number) {
     const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
     return this.http.get(url).pipe(
+      mergeMap((data: any) => {
+        return this.getSunriseSunset(lat, lon).then((sunriseSunsetData: any) => {
+          const sunriseTime = new Date(sunriseSunsetData.results.sunrise).getTime();
+          const sunsetTime = new Date(sunriseSunsetData.results.sunset).getTime();
+          const currentTime = Date.now();
+
+          data.isDaytime = this.isDaytime(currentTime, sunriseTime, sunsetTime);
+          return data;
+        });
+      }),
       map((data: any) => {
-        //Methode pour convertir kelin à celsius
+        // Convertir de Kelvin à Celsius
         data.main.temp = data.main.temp - 273.15;
         return data;
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred while fetching weather data:', error);
+        return ('An error occurred while fetching weather data.');
       })
     );
   }
+
+  private getSunriseSunset(lat: number, lon: number) {
+    const sunriseSunsetUrl = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
+    return axios.get(sunriseSunsetUrl).then((response: any) => response.data);
+  }
+
+
   getCurrentLocation() {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -66,6 +88,10 @@ export class WeatherService {
         return data;
       })
     );
+  }
+
+  isDaytime(currentTime: number, sunriseTime: number, sunsetTime: number): boolean {
+    return currentTime >= sunriseTime && currentTime <= sunsetTime;
   }
 }
 
