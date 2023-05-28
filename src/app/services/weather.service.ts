@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,9 @@ export class WeatherService {
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
   private apiKey = 'b97064688b9fd10fd57ce57df65e1add';
 
-  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<
+    any[]
+  >([]);
   constructor(private http: HttpClient) {}
 
   getWeather(lat: number, lon: number) {
@@ -51,7 +53,7 @@ export class WeatherService {
         const dailyForecasts: any[] = [];
         const forecasts = data.list;
         let currentDate = new Date(forecasts[0].dt_txt).getDate();
-  
+
         forecasts.forEach((forecast: any) => {
           const forecastDate = new Date(forecast.dt_txt).getDate();
           if (forecastDate !== currentDate) {
@@ -59,7 +61,7 @@ export class WeatherService {
             currentDate = forecastDate;
           }
         });
-  
+
         // Retourner les prévisions filtrées
         data.list = dailyForecasts;
         return data;
@@ -67,6 +69,3 @@ export class WeatherService {
     );
   }
 }
-
-
-

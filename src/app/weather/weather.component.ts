@@ -10,7 +10,7 @@ export class WeatherComponent implements OnInit {
   weatherData: any;
 
   constructor(private weatherService: WeatherService) {}
-  
+
   ngOnInit(): void {
     this.weatherService
       .getCurrentLocation()
@@ -25,7 +25,6 @@ export class WeatherComponent implements OnInit {
         console.log(error);
         // Handle error
       });
-      
   }
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
@@ -33,7 +32,11 @@ export class WeatherComponent implements OnInit {
   }
   getFormattedDate(timestamp: number) {
     const date = new Date(timestamp * 1000);
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    };
     return date.toLocaleDateString('fr-FR', options);
   }
 }
