@@ -23,10 +23,25 @@
     data-aos="zoom-in"
     data-aos-offset="300"
     data-aos-easing="ease-in-sine"
-    class="xl:text-3xl py-5 xl:ml-7 xl:absolute text-center text-xl border-b-2 font-playfair font-normal"
+    class="xl:text-3xl py-5 xl:ml-7 xl:absolute text-center text-xl border-b-2 font-playfair font-normal flex flex-col xl:flex-row items-center gap-10"
   >
-    Mardi 30 mai {{ weatherData.list }} | {{ weatherData.name }}, France
+    Mardi 30 mai | {{ weatherData.name }}
+    <div class="pt-2 text-xl">
+      <input
+        class="border-none"
+        type="text"
+        [(ngModel)]="city"
+        placeholder="Entrez une ville"
+      />
+      <button
+        class="border-2 px-2 cursor-pointer hover:bg-black hover:text-white transition-all uppercase"
+        (click)="search()"
+      >
+        Search
+      </button>
+    </div>
   </div>
+
   <div class="flex justify-center z-10">
     <img
       class="xl:absolute xl:right-28 xl:top-48 h-64 xl:h-96 animated-svg z-10"
@@ -46,14 +61,16 @@
     <p
       data-aos="zoom-in"
       data-aos-offset="300"
+      data-aos-duration="1000"
       data-aos-easing="ease-in-sine"
-      class="xl:text-[235px] text-[150px] xl:left-[17%] xl:absolute xl:top-[15%] text-center font-playfair"
+      class="xl:text-[235px] text-[150px] xl:left-[17%] xl:absolute xl:top-[12%] text-center font-playfair"
     >
       {{ formatTemperature(weatherData.main.temp) }}°
     </p>
     <p
       data-aos="zoom-in"
       data-aos-offset="300"
+      data-aos-duration="1000"
       data-aos-easing="ease-in-sine"
       class="text-[40px] xl:absolute xl:top-[43%] xl:left-[33%] capitalize text-center my-0 font-playfair"
     >
@@ -62,22 +79,18 @@
   </div>
   <div class="flex justify-center items-stretch flex-wrap gap-20 pt-5">
     <div
-      data-aos="zoom-in"
-      data-aos-offset="300"
-      data-aos-easing="ease-in-sine"
+      data-aos="fade-up"
+      data-aos-duration="1000"
       class="flex xl:absolute top-[57%] left-[18%] items-center lg:w-[110px]"
     >
       <fa-icon [icon]="faWind" size="xl"></fa-icon>
-      <p
-        data-aos="zoom-in"
-        data-aos-offset="300"
-        data-aos-easing="ease-in-sine"
-        class="text-2xl pl-2"
-      >
+      <p class="text-2xl pl-2">
         {{ formatTemperature(weatherData.wind.speed) }} km
       </p>
     </div>
     <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
       class="flex xl:absolute top-[65%] left-[18%] items-center lg:w-[110px]"
     >
       <fa-icon [icon]="faArrowLeft" size="xl"></fa-icon>
@@ -87,6 +100,8 @@
     </div>
 
     <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
       class="flex xl:absolute top-[57%] left-[33%] items-center lg:w-[110px]"
     >
       <fa-icon [icon]="faDrop" size="xl"></fa-icon>
@@ -94,13 +109,21 @@
         {{ formatTemperature(weatherData.main.humidity) }}%
       </p>
     </div>
-    <div class="flex xl:absolute top-[65%] left-[33%] items-center">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      class="flex xl:absolute top-[65%] left-[33%] items-center"
+    >
       <fa-icon [icon]="faThermometer" size="xl"></fa-icon>
       <p class="text-2xl pl-2">
         {{ formatTemperature(weatherData.main.temp) }}°
       </p>
     </div>
   </div>
+</div>
+
+<div *ngIf="weatherData">
+  <!-- Affichez ici les informations sur la météo récupérées depuis l'API -->
 </div>
 
 <app-weather></app-weather>
