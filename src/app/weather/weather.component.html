@@ -1,14 +1,61 @@
-<div *ngIf="weatherData">
-  <h2>{{ weatherData.city.name }}</h2>
-  <div *ngFor="let forecast of weatherData.list">
-    <p>{{ forecast.dt_txt | date:'EEEE'}}</p>
+<!-- <div *ngIf="weatherData">
+  <h2 class="text-center">{{ weatherData.city.name }}</h2>
+  <div class="p-5" *ngFor="let forecast of weatherData.list">
+    <p>{{ forecast.dt_txt | date : "EEEE" }}</p>
     <p>{{ formatTemperature(forecast.main.temp) }}°C</p>
     <p>{{ formatTemperature(forecast.wind.speed) }}KM/h</p>
     <p>{{ formatTemperature(forecast.wind.deg) }}Deg</p>
+    <p>{{ formatTemperature(forecast.main.humidity) }}%</p>
     <p>{{ forecast.weather[0].description }}</p>
     <div *ngIf="isDaytime !== undefined">
       <img *ngIf="isDaytime" src="sun.png" alt="Soleil">
       <img *ngIf="!isDaytime" src="moon.png" alt="Lune">
      </div>
+  </div>
+</div> -->
+
+<div class="p-10 xl:px-72">
+  <h1
+    class="tracking-widest uppercase font-playfair text-center py-5 text-3xl border-2 mb-5"
+  >
+    prévison sur 5 jours
+  </h1>
+  <div *ngIf="weatherData">
+    <div *ngFor="let forecast of weatherData.list">
+      <div class="text-center mb-5 mt-2 font-bold">
+        <p class="font-roboto text-xl space tracking-wider xl:text-2xl">
+          {{ forecast.dt_txt | date : "EEEE" }}
+        </p>
+      </div>
+      <div
+        class="xl:flex xl:justify-between xl:items-center border-b-2 pb-5 gap-2 flex-initial px-10 sm:flex sm:flex-row sm:justify-center sm:gap-10 flex flex-col items-center justify-center flex-wrap"
+      >
+        <img class="" src="../assets/soleilMobile.svg" alt="" />
+        <div class="flex items-center gap-1 flex-wrap">
+          <fa-icon [icon]="faThermometer" size="xl"></fa-icon>
+          <p class="text-center text-xl">
+            {{ formatTemperature(forecast.main.temp) }}°C
+          </p>
+        </div>
+        <div class="flex items-center gap-1 flex-wrap">
+          <fa-icon [icon]="faWind" size="xl"></fa-icon>
+          <p class="text-center text-xl">
+            {{ formatTemperature(forecast.wind.speed) }}KM/h
+          </p>
+        </div>
+        <div class="flex items-center gap-1 flex-wrap">
+          <fa-icon [icon]="faArrowLeft" size="xl"></fa-icon>
+          <p class="text-center text-xl">
+            {{ formatTemperature(forecast.wind.deg) }}Deg
+          </p>
+        </div>
+        <div class="flex items-center gap-1 flex-wrap">
+          <fa-icon [icon]="faDrop" size="xl"></fa-icon>
+          <p class="text-center text-xl">
+            {{ formatTemperature(forecast.main.humidity) }}%
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

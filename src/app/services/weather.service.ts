@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-import { BehaviorSubject, catchError, from, map, mergeMap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, catchError, from, map, mergeMap, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,9 @@ export class WeatherService {
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
   private apiKey = 'b97064688b9fd10fd57ce57df65e1add';
 
-  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<
+    any[]
+  >([]);
   constructor(private http: HttpClient) {}
 
   getWeather(lat: number, lon: number) {
@@ -76,7 +79,7 @@ export class WeatherService {
         const dailyForecasts: any[] = [];
         const forecasts = data.list;
         let currentDate = new Date(forecasts[0].dt_txt).getDate();
-  
+
         forecasts.forEach((forecast: any) => {
           const forecastDate = new Date(forecast.dt_txt).getDate();
           if (forecastDate !== currentDate) {
@@ -84,13 +87,14 @@ export class WeatherService {
             currentDate = forecastDate;
           }
         });
-  
+
         // Retourner les prévisions filtrées
         data.list = dailyForecasts;
         return data;
       })
     );
   }
+
 
   isDaytime(currentTime: number, sunriseTime: number, sunsetTime: number): boolean {
     if (currentTime >= sunriseTime && currentTime <= sunsetTime) {
@@ -101,4 +105,14 @@ export class WeatherService {
     }
 }
 
+  search(city: string): Observable<any> {
+    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${this.apiKey}&units=metric`;
 
+
+    const currentWeather$ = this.http.get(currentWeatherUrl);
+    const forecast$ = this.http.get(forecastUrl);
+
+    return forkJoin([currentWeather$, forecast$]);
+  }
+}
