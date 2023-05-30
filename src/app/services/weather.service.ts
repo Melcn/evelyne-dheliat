@@ -27,7 +27,7 @@ export class WeatherService {
               const sunsetTime = new Date(sunriseSunsetData.results.sunset).getTime();
               const currentTime = Date.now();
               
-              data.isDaytime = this.isDaytime(currentTime, sunriseTime, sunsetTime);
+              data.isDaytime = this.isDayTime(currentTime, sunriseTime, sunsetTime);
               return data;
           })
         );
@@ -94,7 +94,7 @@ export class WeatherService {
   }
 
 
-  isDaytime(currentTime: number, sunriseTime: number, sunsetTime: number): boolean {
+  isDayTime(currentTime: number, sunriseTime: number, sunsetTime: number): boolean {
     if (currentTime >= sunriseTime && currentTime <= sunsetTime) {
     return true; // Il fait jour
     } else {
