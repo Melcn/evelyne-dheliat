@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import { Axios } from 'axios';
 import { BehaviorSubject, Observable, forkJoin, catchError, from, map, mergeMap, throwError } from 'rxjs';
 
 
@@ -103,7 +103,7 @@ export class WeatherService {
     return false; // Il fait nuit
     }
     }
-}
+
 
   search(city: string): Observable<any> {
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`;

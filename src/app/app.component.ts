@@ -50,8 +50,6 @@ export class AppComponent implements OnInit {
     return temp.toFixed(0);
   }
 
-}
-
   search() {
     this.weatherService
       .search(this.city)
