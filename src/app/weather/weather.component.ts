@@ -8,40 +8,31 @@ import { WeatherService } from '../services/weather.service';
 })
 export class WeatherComponent implements OnInit {
   weatherData: any;
+  isDaytime: boolean | undefined;
 
   constructor(private weatherService: WeatherService) {}
   
-  ngOnInit(): void {
-    this.weatherService
-      .getCurrentLocation()
-      .then((location: any) => {
-        this.weatherService
-          .getWeatherForecast(location.lat, location.lon)
-          .subscribe((data) => {
-            this.weatherData = data;
-           
-            const isDaytime = data.isDaytime;
-
-            // Afficher l'icône correspondante en fonction de isDaytime
-            if (typeof isDaytime !== 'undefined') {
-              if (isDaytime) {
-                // Afficher l'icône du soleil
-                console.log('Afficher icône du soleil');
-              } else {
-                // Afficher l'icône de la lune
-                console.log('Afficher icône de la lune');
-              }
-            } else {
-              console.log('isDaytime n\'est pas défini');
-            }
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle error
-      });
-    
-  }
+   ngOnInit(): void {
+ this.weatherService
+ .getCurrentLocation()
+ .then((location: any) => {
+ this.weatherService
+ .getWeather(location.lat, location.lon)
+ .subscribe((data) => {
+ this.isDaytime = data.isDaytime;
+ });
+ 
+ this.weatherService
+ .getWeatherForecast(location.lat, location.lon)
+ .subscribe((data) => {
+ this.weatherData = data;
+ });
+ })
+ .catch((error) => {
+ console.log(error);
+ // Handle error
+ });
+ }
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);

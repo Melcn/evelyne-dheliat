@@ -6,5 +6,9 @@
     <p>{{ formatTemperature(forecast.wind.speed) }}KM/h</p>
     <p>{{ formatTemperature(forecast.wind.deg) }}Deg</p>
     <p>{{ forecast.weather[0].description }}</p>
+    <div *ngIf="isDaytime !== undefined">
+      <img *ngIf="isDaytime" src="sun.png" alt="Soleil">
+      <img *ngIf="!isDaytime" src="moon.png" alt="Lune">
+     </div>
   </div>
 </div>

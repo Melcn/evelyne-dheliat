@@ -1,5 +1,4 @@
 
-
 <div *ngIf="weatherData">
   <h2>{{ weatherData.name }}</h2>
   <p>{{ weatherData.weather[0].description }}</p>
@@ -7,5 +6,10 @@
   <p>{{ formatTemperature(weatherData.wind.speed) }} km/h</p>
   <p>{{ formatTemperature(weatherData.wind.deg) }} Deg</p>
   <p>{{ formatTemperature(weatherData.main.humidity) }} %</p>
+  <div *ngIf="isDaytime !== undefined">
+    <img *ngIf="isDaytime" src="sun.png" alt="Soleil">
+    <img *ngIf="!isDaytime" src="moon.png" alt="Lune">
+   </div>
 </div>
+
 <app-weather></app-weather>
