@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
+import { faWind } from '@fortawesome/free-solid-svg-icons';
+import { faThermometerHalf } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-weather',
@@ -7,6 +11,10 @@ import { WeatherService } from '../services/weather.service';
   styleUrls: ['./weather.component.css'],
 })
 export class WeatherComponent implements OnInit {
+  faDrop = faDroplet;
+  faArrowLeft = faArrowLeft;
+  faThermometer = faThermometerHalf;
+  faWind = faWind;
   weatherData: any;
 
   constructor(private weatherService: WeatherService) {}
