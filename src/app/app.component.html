@@ -1,20 +1,4 @@
-<!-- <div class="flex justify-center items-center">
-  <div class="w-[1300px] h-[800px] border-2 rounded-xl">
-    <div class="text-center" *ngIf="weatherData">
-      <h2>{{ weatherData.name }}</h2>
-      <p>{{ weatherData.weather[0].description }}</p>
-      <div class="flex">
-        <p class="text-9xl text-center">
-          {{ formatTemperature(weatherData.main.temp) }}°C
-        </p>
-      </div>
-      <p>{{ formatTemperature(weatherData.wind.speed) }} km/h</p>
-      <p>{{ formatTemperature(weatherData.wind.deg) }} Deg</p>
-      <p>{{ formatTemperature(weatherData.main.humidity) }} %</p>
-    </div>
-  </div>
-</div>
-<app-weather></app-weather> -->
+
 
 <div
   class="h-screen relative font-roboto text-blackbeam overflow-x-hidden overflow-y-hidden"
@@ -125,5 +109,6 @@
 <div *ngIf="weatherData">
   <!-- Affichez ici les informations sur la météo récupérées depuis l'API -->
 </div>
+
 
 <app-weather></app-weather>
