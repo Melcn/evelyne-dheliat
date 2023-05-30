@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Axios } from 'axios';
+import axios from 'axios';
 import { BehaviorSubject, Observable, forkJoin, catchError, from, map, mergeMap, throwError } from 'rxjs';
 
 
@@ -13,9 +13,7 @@ export class WeatherService {
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
   private apiKey = 'b97064688b9fd10fd57ce57df65e1add';
 
-  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<
-    any[]
-  >([]);
+  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   constructor(private http: HttpClient) {}
 
   getWeather(lat: number, lon: number) {
