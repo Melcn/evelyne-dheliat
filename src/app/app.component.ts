@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
   weatherData: any;
   constructor(private weatherService: WeatherService) {}
   ngOnInit() {

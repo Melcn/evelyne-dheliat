@@ -1,10 +1,36 @@
-<div *ngIf="weatherData">
-  <h2>{{ weatherData.city.name }}</h2>
-  <div *ngFor="let forecast of weatherData.list">
-    <p>{{ forecast.dt_txt | date:'EEEE'}}</p>
+<!-- <div *ngIf="weatherData">
+  <h2 class="text-center">{{ weatherData.city.name }}</h2>
+  <div class="p-5" *ngFor="let forecast of weatherData.list">
+    <p>{{ forecast.dt_txt | date : "EEEE" }}</p>
     <p>{{ formatTemperature(forecast.main.temp) }}°C</p>
     <p>{{ formatTemperature(forecast.wind.speed) }}KM/h</p>
     <p>{{ formatTemperature(forecast.wind.deg) }}Deg</p>
+    <p>{{ formatTemperature(forecast.main.humidity) }}%</p>
     <p>{{ forecast.weather[0].description }}</p>
+  </div>
+</div> -->
+
+<div class="p-12 lg:p-48">
+  <h1 class="uppercase font-playfair text-center py-5 text-3xl border-2 mb-5">
+    à venir
+  </h1>
+  <div *ngFor="let forecast of weatherData.list">
+    <div class="text-center">
+      <p class="font-playfair text-xl">
+        {{ forecast.dt_txt | date : "EEEE" }}
+      </p>
+    </div>
+    <div
+      class="flex justify-between items-center border-b-2 pb-5 flex-wrap gap-2 lg:justify-around"
+    >
+      <img class="" src="../assets/soleilMobile.svg" alt="" />
+
+      <p>{{ formatTemperature(forecast.main.temp) }}°C</p>
+      <p>{{ formatTemperature(forecast.wind.speed) }}KM/h</p>
+      <p>{{ formatTemperature(forecast.wind.deg) }}Deg</p>
+      <p class="text-center">
+        {{ formatTemperature(forecast.main.humidity) }}%
+      </p>
+    </div>
   </div>
 </div>
