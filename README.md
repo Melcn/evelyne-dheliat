@@ -1,28 +1,73 @@
-# NgWeatherApp
+# Projet Météo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
+Ce projet est une application Angular qui affiche les prévisions météorologiques pour la localisation actuelle de l'utilisateur. L'application utilise l'API OpenWeatherMap pour récupérer les données météorologiques et affiche la météo actuelle ainsi que les prévisions pour les 5 prochains jours.
 
-## Development server
+## Fonctionnalités
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Affichage de la météo actuelle pour la localisation de l'utilisateur
+- Affichage des prévisions météorologiques pour les 5 prochains jours
+- Affichage d'un soleil ou d'une lune en fonction de si il fait jour ou nuit
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Pour installer les dépendances du projet, exécutez la commande suivante :
+npm install
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Lancement
 
-## Running unit tests
+Pour lancer l'application en mode développement, exécutez la commande suivante :
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ng serve
 
-## Running end-to-end tests
+L'application sera accessible à l'adresse `http://localhost:4200/`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Déploiement
 
-## Further help
+Pour construire l'application pour la production, exécutez la commande suivante :
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# evelyne-dheliat
+ng build --prod
+
+Les fichiers générés seront disponibles dans le répertoire `dist/`.
+
+###
+###
+
+# Weather Project
+
+This project is an Angular application that displays weather forecasts for the user's current location. The application uses the OpenWeatherMap API to retrieve weather data and displays the current weather as well as forecasts for the next 5 days.
+
+## Features
+
+- Display of current weather for user's location
+- Display of weather forecasts for the next 5 days
+- Display of a sun or moon depending on whether it is day or night
+
+## Installation
+
+To install the project dependencies, run the following command:
+npm install
+
+
+## Launching
+
+To launch the application in development mode, run the following command:
+
+ng serve
+
+The application will be accessible at `http://localhost:4200/`.
+
+## Deployment
+
+To build the application for production, run the following command:
+
+ng build --prod
+
+The generated files will be available in the `dist/` directory.
+
+
+
+## Credit
+
+Anis https://github.com/anis595
+Mel: https://github.com/Melcn
