@@ -16,24 +16,32 @@ export class WeatherComponent implements OnInit {
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
+  isDaytime: boolean | undefined;
 
   constructor(private weatherService: WeatherService) {}
+  
+   ngOnInit(): void {
+ this.weatherService
+ .getCurrentLocation()
+ .then((location: any) => {
+ this.weatherService
+ .getWeather(location.lat, location.lon)
+ .subscribe((data) => {
+ this.isDaytime = data.isDaytime;
+ });
+ 
+ this.weatherService
+ .getWeatherForecast(location.lat, location.lon)
+ .subscribe((data) => {
+ this.weatherData = data;
+ });
+ })
+ .catch((error) => {
+ console.log(error);
+ // Handle error
+ });
+ }
 
-  ngOnInit(): void {
-    this.weatherService
-      .getCurrentLocation()
-      .then((location: any) => {
-        this.weatherService
-          .getWeatherForecast(location.lat, location.lon)
-          .subscribe((data) => {
-            this.weatherData = data;
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle error
-      });
-  }
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);

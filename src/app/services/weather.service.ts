@@ -1,30 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, forkJoin, map } from 'rxjs';
+import axios from 'axios';
+import { BehaviorSubject, Observable, forkJoin, catchError, from, map, mergeMap, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class WeatherService {
   private apiForcast = 'https://api.openweathermap.org/data/2.5/forecast';
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
   private apiKey = 'b97064688b9fd10fd57ce57df65e1add';
 
-  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<
-    any[]
-  >([]);
+  public weatherDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   constructor(private http: HttpClient) {}
 
   getWeather(lat: number, lon: number) {
     const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
-    return this.http.get(url).pipe(
+    return from(this.http.get(url)).pipe(
+          mergeMap((data: any) => {
+            return from(this.getSunriseSunset(lat, lon)).pipe(
+              
+            map((sunriseSunsetData: any) => {
+              const sunriseTime = new Date(sunriseSunsetData.results.sunrise).getTime();
+              const sunsetTime = new Date(sunriseSunsetData.results.sunset).getTime();
+              const currentTime = Date.now();
+              
+              data.isDaytime = this.isDaytime(currentTime, sunriseTime, sunsetTime);
+              return data;
+          })
+        );
+      }),
       map((data: any) => {
-        //Methode pour convertir kelin à celsius
+        // Convertir de Kelvin à Celsius
         data.main.temp = data.main.temp - 273.15;
         return data;
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred while fetching weather data:', error);
+        return throwError('An error occurred while fetching weather data.');
       })
     );
   }
+   
+  private getSunriseSunset(lat: number, lon: number) {
+    const sunriseSunsetUrl = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
+    return axios.get(sunriseSunsetUrl).then((response: any) => response.data);
+  }
+
   getCurrentLocation() {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -68,9 +92,21 @@ export class WeatherService {
       })
     );
   }
+
+
+  isDaytime(currentTime: number, sunriseTime: number, sunsetTime: number): boolean {
+    if (currentTime >= sunriseTime && currentTime <= sunsetTime) {
+    return true; // Il fait jour
+    } else {
+    return false; // Il fait nuit
+    }
+    }
+
+
   search(city: string): Observable<any> {
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`;
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${this.apiKey}&units=metric`;
+
 
     const currentWeather$ = this.http.get(currentWeatherUrl);
     const forecast$ = this.http.get(forecastUrl);

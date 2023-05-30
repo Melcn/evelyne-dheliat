@@ -7,18 +7,22 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 import * as Aos from 'aos';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+
+  
   city!: string;
   faDrop = faDroplet;
   faArrowLeft = faArrowLeft;
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
+  isDaytime: boolean | undefined;
   forecastData: any;
 
   constructor(private weatherService: WeatherService) {}
@@ -31,6 +35,7 @@ export class AppComponent implements OnInit {
           .getWeather(location.lat, location.lon)
           .subscribe((data) => {
             this.weatherData = data;
+            this.isDaytime = data.isDaytime;
           });
       })
       .catch((error) => {
@@ -39,10 +44,12 @@ export class AppComponent implements OnInit {
       });
   }
 
+
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);
   }
+
   search() {
     this.weatherService
       .search(this.city)
