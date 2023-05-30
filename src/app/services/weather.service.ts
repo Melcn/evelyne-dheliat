@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -67,5 +67,14 @@ export class WeatherService {
         return data;
       })
     );
+  }
+  search(city: string): Observable<any> {
+    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${this.apiKey}&units=metric`;
+
+    const currentWeather$ = this.http.get(currentWeatherUrl);
+    const forecast$ = this.http.get(forecastUrl);
+
+    return forkJoin([currentWeather$, forecast$]);
   }
 }

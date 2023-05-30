@@ -13,11 +13,14 @@ import * as Aos from 'aos';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  city!: string;
   faDrop = faDroplet;
   faArrowLeft = faArrowLeft;
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
+  forecastData: any;
+
   constructor(private weatherService: WeatherService) {}
   ngOnInit() {
     Aos.init();
@@ -39,5 +42,13 @@ export class AppComponent implements OnInit {
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);
+  }
+  search() {
+    this.weatherService
+      .search(this.city)
+      .subscribe(([currentWeatherData, forecastData]) => {
+        this.weatherData = currentWeatherData;
+        this.forecastData = forecastData;
+      });
   }
 }
