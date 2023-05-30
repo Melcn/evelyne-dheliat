@@ -18,29 +18,30 @@ export class WeatherService {
   getWeather(lat: number, lon: number) {
     const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
     return from(this.http.get(url)).pipe(
-    mergeMap((data: any) => {
-    return from(this.getSunriseSunset(lat, lon)).pipe(
-    map((sunriseSunsetData: any) => {
-    const sunriseTime = new Date(sunriseSunsetData.results.sunrise).getTime();
-    const sunsetTime = new Date(sunriseSunsetData.results.sunset).getTime();
-    const currentTime = Date.now();
-    
-    data.isDaytime = this.isDaytime(currentTime, sunriseTime, sunsetTime);
-    return data;
-    })
+          mergeMap((data: any) => {
+            return from(this.getSunriseSunset(lat, lon)).pipe(
+              
+            map((sunriseSunsetData: any) => {
+              const sunriseTime = new Date(sunriseSunsetData.results.sunrise).getTime();
+              const sunsetTime = new Date(sunriseSunsetData.results.sunset).getTime();
+              const currentTime = Date.now();
+              
+              data.isDaytime = this.isDaytime(currentTime, sunriseTime, sunsetTime);
+              return data;
+          })
+        );
+      }),
+      map((data: any) => {
+        // Convertir de Kelvin à Celsius
+        data.main.temp = data.main.temp - 273.15;
+        return data;
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred while fetching weather data:', error);
+        return throwError('An error occurred while fetching weather data.');
+      })
     );
-    }),
-    map((data: any) => {
-    // Convertir de Kelvin à Celsius
-    data.main.temp = data.main.temp - 273.15;
-    return data;
-    }),
-    catchError((error: any) => {
-    console.error('Error occurred while fetching weather data:', error);
-    return throwError('An error occurred while fetching weather data.');
-    })
-    );
-    }
+  }
    
   private getSunriseSunset(lat: number, lon: number) {
     const sunriseSunsetUrl = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
