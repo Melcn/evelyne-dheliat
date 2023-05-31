@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
-  isDaytime: boolean | undefined;
+  isDayTime: boolean | undefined;
   forecastData: any;
 
   constructor(private weatherService: WeatherService) {}
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
           .getWeather(location.lat, location.lon)
           .subscribe((data) => {
             this.weatherData = data;
-            this.isDaytime = data.isDaytime;
+            this.isDayTime = data.isDayTime;
           });
       })
       .catch((error) => {
