@@ -18,9 +18,32 @@ export class WeatherComponent implements OnInit {
   faWind = faWind;
   weatherData: any;
   isDayTime: boolean | undefined;
-  faCompass = faCompass;
+
 
   constructor(private weatherService: WeatherService) {}
+  
+   ngOnInit(): void {
+ this.weatherService
+ .getCurrentLocation()
+ .then((location: any) => {
+ this.weatherService
+ .getWeather(location.lat, location.lon)
+ .subscribe((data) => {
+ this.isDayTime = data.isDayTime;
+ });
+ 
+ this.weatherService
+ .getWeatherForecast(location.lat, location.lon)
+ .subscribe((data) => {
+ this.weatherData = data;
+ });
+ })
+ .catch((error) => {
+ console.log(error);
+ // Handle error
+ });
+ }
+
 
   ngOnInit(): void {
     this.weatherService
@@ -42,6 +65,8 @@ export class WeatherComponent implements OnInit {
         // Handle error
       });
   }
+=======
+
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);

@@ -1,20 +1,4 @@
-<!-- <div class="flex justify-center items-center">
-  <div class="w-[1300px] h-[800px] border-2 rounded-xl">
-    <div class="text-center" *ngIf="weatherData">
-      <h2>{{ weatherData.name }}</h2>
-      <p>{{ weatherData.weather[0].description }}</p>
-      <div class="flex">
-        <p class="text-9xl text-center">
-          {{ formatTemperature(weatherData.main.temp) }}°C
-        </p>
-      </div>
-      <p>{{ formatTemperature(weatherData.wind.speed) }} km/h</p>
-      <p>{{ formatTemperature(weatherData.wind.deg) }} Deg</p>
-      <p>{{ formatTemperature(weatherData.main.humidity) }} %</p>
-    </div>
-  </div>
-</div>
-<app-weather></app-weather> -->
+
 
 <div
   class="h-screen relative font-roboto text-blackbeam overflow-x-hidden overflow-y-hidden"
@@ -22,7 +6,11 @@
   <div
     class="xl:text-3xl py-5 xl:ml-7 xl:absolute text-center text-xl border-b-2 font-playfair font-normal flex flex-col xl:flex-row items-center gap-10"
   >
-    Wednesday May 31 | {{ weatherData.name }}
+
+   
+
+  Wednesday, May 31th. | {{ weatherData.name }}
+
     <div class="pt-2 text-xl">
       <input
         class="border-none"
@@ -38,6 +26,7 @@
       </button>
     </div>
   </div>
+
 
   <div class="flex justify-center z-10">
     <img
@@ -57,6 +46,10 @@
       src="../assets/Vector 2 (4).svg"
       alt=""
     />
+
+  
+    
+
   </div>
   <div class="">
     <div
@@ -107,6 +100,8 @@
     </div>
   </div>
 </div>
+
+
 
 <app-weather></app-weather>
 

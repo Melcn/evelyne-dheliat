@@ -8,16 +8,14 @@ import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 import { faCompass } from '@fortawesome/free-solid-svg-icons';
 import * as Aos from 'aos';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
-  imageUrl!: string;
+
   city!: string;
   faCompass = faCompass;
   faDrop = faDroplet;
@@ -25,6 +23,7 @@ export class AppComponent implements OnInit {
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
+  isDayTime: boolean | undefined;
   forecastData: any;
   isDayTime: boolean | undefined;
 
@@ -39,7 +38,7 @@ export class AppComponent implements OnInit {
           .getWeather(location.lat, location.lon)
           .subscribe((data) => {
             this.weatherData = data;
-            this.isDayTime = data.isDaytime;
+
           });
       })
       .catch((error) => {
@@ -48,10 +47,12 @@ export class AppComponent implements OnInit {
       });
   }
 
+
   formatTemperature(temp: number) {
     //Methode pour qu'il n'y ait pas de chiffre après la virgule
     return temp.toFixed(0);
   }
+
   search() {
     this.weatherService
       .search(this.city)
