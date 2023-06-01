@@ -12,10 +12,11 @@ import { FormsModule } from '@angular/forms';
   declarations: [AppComponent, WeatherComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
     FormsModule,
+
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

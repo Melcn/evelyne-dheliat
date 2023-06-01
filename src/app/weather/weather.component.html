@@ -19,38 +19,40 @@
     class="tracking-widest uppercase font-playfair text-center py-5 text-3xl border-2 mb-5"
   >
     Five-day forecast
+
   </h1>
   <div *ngIf="weatherData">
     <div *ngFor="let forecast of weatherData.list">
       <div class="text-center mb-5 mt-2 font-bold">
-        <p class="font-roboto text-xl space tracking-wider xl:text-2xl">
+        <p class="font-roboto text-xl space tracking-wider xl:text-2xl pt-5">
           {{ forecast.dt_txt | date : "EEEE" }}
         </p>
       </div>
       <div
-        class="xl:flex xl:justify-between xl:items-center border-b-2 pb-5 gap-2 flex-initial px-10 sm:flex sm:flex-row sm:justify-center sm:gap-10 flex flex-col items-center justify-center flex-wrap"
+        class="xl:flex xl:justify-between xl:items-center border-y-2 py-5 gap-2 flex-initial px-10 sm:flex sm:flex-row sm:justify-center sm:gap-10 flex flex-col items-center justify-center flex-wrap"
       >
-        <img *ngIf="isDayTime" src="../assets/soleilMobile.svg" alt="sun" />
-        <img *ngIf="!isDayTime" src="../assets/Group_1_1.svg" alt="moon" />
-        <div class="flex items-center gap-1 flex-wrap">
+        <img class="" src="../assets/soleilMobile.svg" alt="" />
+        <div data-aos="fade-up" class="flex items-center gap-1 flex-wrap">
+        
+
           <fa-icon [icon]="faThermometer" size="xl"></fa-icon>
           <p class="text-center text-xl">
             {{ formatTemperature(forecast.main.temp) }}°C
           </p>
         </div>
-        <div class="flex items-center gap-1 flex-wrap">
+        <div data-aos="fade-up" class="flex items-center gap-1 flex-wrap">
           <fa-icon [icon]="faWind" size="xl"></fa-icon>
           <p class="text-center text-xl">
             {{ formatTemperature(forecast.wind.speed) }}KM/h
           </p>
         </div>
-        <div class="flex items-center gap-1 flex-wrap">
-          <fa-icon [icon]="faArrowLeft" size="xl"></fa-icon>
+        <div data-aos="fade-up" class="flex items-center gap-1 flex-wrap">
+          <fa-icon [icon]="faCompass" size="xl"></fa-icon>
           <p class="text-center text-xl">
             {{ formatTemperature(forecast.wind.deg) }}Deg
           </p>
         </div>
-        <div class="flex items-center gap-1 flex-wrap">
+        <div data-aos="fade-up" class="flex items-center gap-1 flex-wrap">
           <fa-icon [icon]="faDrop" size="xl"></fa-icon>
           <p class="text-center text-xl">
             {{ formatTemperature(forecast.main.humidity) }}%

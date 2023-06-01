@@ -5,6 +5,7 @@ import { faWind } from '@fortawesome/free-solid-svg-icons';
 import { faThermometerHalf } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
+import { faCompass } from '@fortawesome/free-solid-svg-icons';
 import * as Aos from 'aos';
 
 
@@ -15,8 +16,8 @@ import * as Aos from 'aos';
 })
 export class AppComponent implements OnInit {
 
-  
   city!: string;
+  faCompass = faCompass;
   faDrop = faDroplet;
   faArrowLeft = faArrowLeft;
   faThermometer = faThermometerHalf;
@@ -24,10 +25,12 @@ export class AppComponent implements OnInit {
   weatherData: any;
   isDayTime: boolean | undefined;
   forecastData: any;
+  isDayTime: boolean | undefined;
 
   constructor(private weatherService: WeatherService) {}
   ngOnInit() {
-    Aos.init();
+    Aos.init({ disable: 'mobile' });
+
     this.weatherService
       .getCurrentLocation() // methode pour demander la localisation de l'utilisateur
       .then((location: any) => {
@@ -35,7 +38,7 @@ export class AppComponent implements OnInit {
           .getWeather(location.lat, location.lon)
           .subscribe((data) => {
             this.weatherData = data;
-            this.isDayTime = data.isDayTime;
+
           });
       })
       .catch((error) => {
@@ -58,4 +61,15 @@ export class AppComponent implements OnInit {
         this.forecastData = forecastData;
       });
   }
+
+  // updateImage(localTime: Date): void {
+  //   const currentTime = localTime.getHours();
+  //   const isDayTime = currentTime >= 6 && currentTime < 18;
+  //   console.log(currentTime);
+  //   if (isDayTime) {
+  //     this.imageUrl = 'assets/luna.svg';
+  //   } else {
+  //     this.imageUrl = 'assets/soleil.svg';
+  //   }
+  // }
 }
