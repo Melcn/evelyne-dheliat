@@ -4,6 +4,7 @@ import { faWind } from '@fortawesome/free-solid-svg-icons';
 import { faThermometerHalf } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
+import { faCompass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-weather',
@@ -16,6 +17,8 @@ export class WeatherComponent implements OnInit {
   faThermometer = faThermometerHalf;
   faWind = faWind;
   weatherData: any;
+  isDayTime: boolean | undefined;
+  faCompass = faCompass;
 
   constructor(private weatherService: WeatherService) {}
 
@@ -23,6 +26,11 @@ export class WeatherComponent implements OnInit {
     this.weatherService
       .getCurrentLocation()
       .then((location: any) => {
+        this.weatherService
+          .getWeatherForecast(location.lat, location.lon)
+          .subscribe((data) => {
+            this.weatherData = data;
+          });
         this.weatherService
           .getWeatherForecast(location.lat, location.lon)
           .subscribe((data) => {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, forkJoin, map } from 'rxjs';
-
+import axios from 'axios';
 @Injectable({
   providedIn: 'root',
 })
@@ -44,6 +44,29 @@ export class WeatherService {
       }
     });
   }
+  private getSunriseSunset(lat: number, lon: number) {
+    const sunriseSunsetUrl = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
+    return axios.get(sunriseSunsetUrl).then((response: any) => {
+      console.log(response.data);
+      return response.data;
+    });
+  }
+  isDayTime(
+    currentTime: number,
+    sunriseTime: number,
+    sunsetTime: number
+  ): boolean {
+    console.log('currentTime:', currentTime);
+    console.log('sunriseTime:', sunriseTime);
+    console.log('sunsetTime:', sunsetTime);
+    if (currentTime >= sunriseTime && currentTime <= sunsetTime) {
+      console.log('isDaytime: true');
+      return true; // Il fait jour
+    } else {
+      console.log('isDaytime: false');
+      return false; // Il fait nuit
+    }
+  }
 
   getWeatherForecast(lat: number, lon: number) {
     const url = `${this.apiForcast}?lat=${lat}&lon=${lon}&cnt=40&appid=${this.apiKey}&units=metric`; // Augmentez le cnt à 40 pour obtenir suffisamment de prévisions pour 5 jours
@@ -72,8 +95,8 @@ export class WeatherService {
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`;
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${this.apiKey}&units=metric`;
 
-    const currentWeather$ = this.http.get(currentWeatherUrl);
-    const forecast$ = this.http.get(forecastUrl);
+    const currentWeather$ = this.http.get<any>(currentWeatherUrl);
+    const forecast$ = this.http.get<any>(forecastUrl);
 
     return forkJoin([currentWeather$, forecast$]);
   }
